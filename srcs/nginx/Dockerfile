@@ -6,15 +6,15 @@
 #    By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/20 14:16:36 by ancoulon          #+#    #+#              #
-#    Updated: 2021/01/24 15:02:32 by ancoulon         ###   ########.fr        #
+#    Updated: 2021/01/25 13:39:24 by ancoulon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FROM alpine
+FROM alpine:3.12
 
 LABEL maintainer="ancoulon <ancoulon@student.s19.be>"
 
-RUN apk update
+RUN apk update && apk upgrade
 
 RUN apk add openssh
 RUN apk add nginx
@@ -31,12 +31,11 @@ RUN mkdir -p /var/www/localhost
 ADD index.html /var/www/localhost/index.html
 
 RUN mkdir -p /run/nginx
-ADD localhost.conf /etc/nginx/http.d/localhost.conf
+RUN rm /etc/nginx/conf.d/default.conf
+ADD localhost.conf /etc/nginx/conf.d/localhost.conf
 
 COPY init.sh /setup/init.sh
 
-EXPOSE 22
-EXPOSE 80
-EXPOSE 443
+EXPOSE 22 80 443
 
 CMD [ "/bin/ash", "/setup/init.sh" ]
