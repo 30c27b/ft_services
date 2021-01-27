@@ -8,15 +8,33 @@ spec:
   ports:
     - port: 3306
   type: ClusterIP
-
 ---
 apiVersion: v1
 kind: PersistentVolume
-
+metadata:
+  name: mysql-pv
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 500Mi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: "/data/mysql"
 ---
-apiVersion: v1
 kind: PersistentVolumeClaim
-
+apiVersion: v1
+metadata:
+  name: mysql-pvc
+spec:
+  storageClassName: manual
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -34,5 +52,13 @@ spec:
       containers:
         - name: mysql
           image: ft_services_mysql
+          imagePullPolicy: Never
           ports:
             - containerPort: 3306
+          volumeMounts:
+            - mountPath: "/var/lib/mysql"
+              name: mysql-pv
+      volumes:
+        - name: mysql-pv
+          persistentVolumeClaim:
+            claimName: mysql-pvc

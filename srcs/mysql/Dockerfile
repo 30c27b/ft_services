@@ -6,13 +6,15 @@
 #    By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/20 21:39:55 by ancoulon          #+#    #+#              #
-#    Updated: 2021/01/25 17:29:28 by ancoulon         ###   ########.fr        #
+#    Updated: 2021/01/26 12:11:32 by ancoulon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 FROM alpine:3.12
 
 LABEL maintainer="ancoulon <ancoulon@student.s19.be>"
+
+VOLUME [ "/var/lib/mysql" ]
 
 RUN apk update
 

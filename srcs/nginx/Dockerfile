@@ -6,7 +6,7 @@
 #    By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/20 14:16:36 by ancoulon          #+#    #+#              #
-#    Updated: 2021/01/25 13:39:24 by ancoulon         ###   ########.fr        #
+#    Updated: 2021/01/26 11:04:03 by ancoulon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,14 @@ RUN echo "keymaster:password" | chpasswd
 RUN ssh-keygen -A
 
 RUN mkdir -p /setup/ssl
-RUN openssl req -batch -newkey rsa:2048 -nodes -keyout /setup/ssl/certificate-key.pem -x509 -days 365 -out /setup/ssl/certificate.pem
+RUN openssl req \
+	-batch \
+	-newkey rsa:2048 \
+	-nodes \
+	-keyout /setup/ssl/certificate-key.pem \
+	-x509 \
+	-days 365 \
+	-out /setup/ssl/certificate.pem
 
 RUN mkdir -p /var/www/localhost
 ADD index.html /var/www/localhost/index.html
