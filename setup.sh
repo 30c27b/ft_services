@@ -6,12 +6,12 @@
 #    By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/20 14:12:58 by ancoulon          #+#    #+#              #
-#    Updated: 2021/01/28 17:22:58 by ancoulon         ###   ########.fr        #
+#    Updated: 2021/01/28 18:25:54 by ancoulon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 kubectl delete -f srcs/.
-#minikube delete --all
+minikube delete --all
 
 minikube start --vm-driver=virtualbox
 
@@ -33,5 +33,7 @@ kubectl apply -f srcs/mysql.yaml
 kubectl apply -f srcs/phpmyadmin.yaml
 kubectl apply -f srcs/wordpress.yaml
 kubectl apply -f srcs/nginx.yaml
+
+kubectl exec -i `kubectl get pods | grep -o "\S*mysql\S*"` -- mysql wordpress -u root < srcs/mysql/wordpress.sql
 
 minikube dashboard
