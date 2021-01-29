@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2021/01/20 14:16:36 by ancoulon          #+#    #+#              #
-#    Updated: 2021/01/29 14:36:04 by ancoulon         ###   ########.fr        #
+#    Created: 2021/01/29 14:26:28 by ancoulon          #+#    #+#              #
+#    Updated: 2021/01/29 15:40:14 by ancoulon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,33 +16,24 @@ LABEL maintainer="ancoulon <ancoulon@student.s19.be>"
 
 RUN apk update && apk upgrade
 
-RUN apk add openssh
-RUN apk add nginx
 RUN apk add openssl
+RUN apk add pure-ftpd --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted
 
 RUN adduser -D keymaster
 RUN echo "keymaster:password" | chpasswd
-RUN ssh-keygen -A
 
-RUN mkdir -p /setup/ssl
+RUN mkdir -p /etc/ssl/private
 RUN openssl req \
 	-newkey rsa:2048 \
 	-nodes \
-	-keyout /setup/ssl/certificate.key \
+	-keyout /etc/ssl/private/pure-ftpd.pem \
 	-x509 \
 	-days 365 \
-	-out /setup/ssl/certificate.crt \
+	-out /etc/ssl/private/pure-ftpd.pem \
 	-subj '/CN=BE'
 
-RUN mkdir -p /var/www/localhost
-ADD index.html /var/www/localhost/index.html
+ADD init.sh /setup/init.sh
 
-RUN mkdir -p /run/nginx
-RUN rm /etc/nginx/conf.d/default.conf
-ADD localhost.conf /etc/nginx/conf.d/localhost.conf
-
-COPY init.sh /setup/init.sh
-
-EXPOSE 22 80 443
+EXPOSE 21 30001-30004
 
 CMD [ "/bin/ash", "/setup/init.sh" ]
