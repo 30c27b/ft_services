@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2021/01/27 10:47:32 by ancoulon          #+#    #+#              #
-#    Updated: 2021/01/29 16:30:19 by ancoulon         ###   ########.fr        #
+#    Created: 2021/02/02 10:21:13 by ancoulon          #+#    #+#              #
+#    Updated: 2021/02/02 11:28:35 by ancoulon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,23 +14,14 @@ FROM alpine:3.12
 
 LABEL maintainer="ancoulon <ancoulon@student.s19.be>"
 
-EXPOSE 5050
+EXPOSE 3000
 
 RUN apk update
 RUN apk upgrade
 
-RUN apk add openrc
-RUN apk add nginx
-RUN apk add php7 php7-fpm php7-opcache php7-gd php7-mysqli php7-zlib \
-	php7-curl php7-mbstring php7-json php7-session
+RUN apk add grafana --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
 
-RUN mkdir -p /var/www/wordpress
-ADD wordpress /var/www/wordpress
-
-RUN mkdir -p /run/nginx
-RUN rm /etc/nginx/conf.d/default.conf
-ADD wordpress.conf /etc/nginx/conf.d/wordpress.conf
-
-COPY init.sh /setup/init.sh
+RUN mkdir -p /setup
+ADD init.sh /setup/init.sh
 
 CMD [ "/bin/ash", "/setup/init.sh" ]

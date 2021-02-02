@@ -6,7 +6,7 @@
 #    By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/20 14:16:36 by ancoulon          #+#    #+#              #
-#    Updated: 2021/01/29 14:36:04 by ancoulon         ###   ########.fr        #
+#    Updated: 2021/01/29 16:26:31 by ancoulon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,14 +14,20 @@ FROM alpine:3.12
 
 LABEL maintainer="ancoulon <ancoulon@student.s19.be>"
 
-RUN apk update && apk upgrade
+ARG SSH_USERNAME
+ARG SSH_PASSWORD
+
+EXPOSE 22 80 443
+
+RUN apk update
+RUN apk upgrade
 
 RUN apk add openssh
 RUN apk add nginx
 RUN apk add openssl
 
-RUN adduser -D keymaster
-RUN echo "keymaster:password" | chpasswd
+RUN adduser -D ${SSH_USERNAME}
+RUN echo "${SSH_USERNAME}:${SSH_PASSWORD}" | chpasswd
 RUN ssh-keygen -A
 
 RUN mkdir -p /setup/ssl
@@ -41,8 +47,6 @@ RUN mkdir -p /run/nginx
 RUN rm /etc/nginx/conf.d/default.conf
 ADD localhost.conf /etc/nginx/conf.d/localhost.conf
 
-COPY init.sh /setup/init.sh
-
-EXPOSE 22 80 443
+ADD init.sh /setup/init.sh
 
 CMD [ "/bin/ash", "/setup/init.sh" ]

@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2021/01/27 10:47:32 by ancoulon          #+#    #+#              #
-#    Updated: 2021/01/29 16:30:19 by ancoulon         ###   ########.fr        #
+#    Created: 2021/02/01 09:48:13 by ancoulon          #+#    #+#              #
+#    Updated: 2021/02/02 10:14:42 by ancoulon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,23 +14,18 @@ FROM alpine:3.12
 
 LABEL maintainer="ancoulon <ancoulon@student.s19.be>"
 
-EXPOSE 5050
+VOLUME [ "/var/lib/influxdb" ]
+
+EXPOSE 8086
 
 RUN apk update
 RUN apk upgrade
 
-RUN apk add openrc
-RUN apk add nginx
-RUN apk add php7 php7-fpm php7-opcache php7-gd php7-mysqli php7-zlib \
-	php7-curl php7-mbstring php7-json php7-session
+RUN apk add influxdb
 
-RUN mkdir -p /var/www/wordpress
-ADD wordpress /var/www/wordpress
+COPY influxdb.conf /etc/influxdb/influxdb.conf
 
-RUN mkdir -p /run/nginx
-RUN rm /etc/nginx/conf.d/default.conf
-ADD wordpress.conf /etc/nginx/conf.d/wordpress.conf
-
-COPY init.sh /setup/init.sh
+RUN mkdir -p /setup
+ADD init.sh /setup/init.sh
 
 CMD [ "/bin/ash", "/setup/init.sh" ]
