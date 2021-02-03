@@ -6,7 +6,7 @@
 #    By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/20 14:16:36 by ancoulon          #+#    #+#              #
-#    Updated: 2021/01/29 16:26:31 by ancoulon         ###   ########.fr        #
+#    Updated: 2021/02/02 18:54:55 by ancoulon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,8 +26,8 @@ RUN apk add openssh
 RUN apk add nginx
 RUN apk add openssl
 
-RUN adduser -D ${SSH_USERNAME}
-RUN echo "${SSH_USERNAME}:${SSH_PASSWORD}" | chpasswd
+RUN adduser -D $SSH_USERNAME
+RUN echo "$SSH_USERNAME:$SSH_PASSWORD" | chpasswd
 RUN ssh-keygen -A
 
 RUN mkdir -p /setup/ssl

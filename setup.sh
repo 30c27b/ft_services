@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
@@ -6,12 +8,12 @@
 #    By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/20 14:12:58 by ancoulon          #+#    #+#              #
-#    Updated: 2021/02/02 12:08:09 by ancoulon         ###   ########.fr        #
+#    Updated: 2021/02/03 11:42:54 by ancoulon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 kubectl delete -f srcs/.
-#minikube delete --all
+minikube delete --all
 
 # CREDENTIALS
 FTPS_USERNAME=ftps
@@ -58,13 +60,15 @@ kubectl apply -f srcs/phpmyadmin.yaml
 kubectl apply -f srcs/wordpress.yaml
 kubectl apply -f srcs/nginx.yaml
 kubectl apply -f srcs/influxdb.yaml
-kubectl exec -i `kubectl get pods | grep -o "\S*influxdb\S*"` -- influx -execute "CREATE DATABASE monitoring"
 kubectl apply -f srcs/grafana.yaml
 
-
+sleep 10
 
 # IMPORTING WORDPRESS CONFIG TO MYSQL DATABASE
 kubectl exec -i `kubectl get pods | grep -o "\S*mysql\S*"` -- mysql wordpress -u root < srcs/mysql/wordpress.sql
+
+# CREATING INFLUXDB DATABASE
+kubectl exec -i `kubectl get pods | grep -o "\S*influxdb\S*"` -- influx -execute "CREATE DATABASE monitoring"
 
 # OPENING DASHBOARD
 minikube dashboard

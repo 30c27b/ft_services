@@ -6,7 +6,7 @@
 #    By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/20 21:39:55 by ancoulon          #+#    #+#              #
-#    Updated: 2021/01/29 16:30:45 by ancoulon         ###   ########.fr        #
+#    Updated: 2021/02/02 18:54:27 by ancoulon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ RUN mkdir -p /setup
 ADD bootstrap.sql /setup/bootstrap.sql
 ADD init.sh /setup/init.sh
 
-RUN sed -i 's/MYSQL_USERNAME/${MYSQL_USERNAME}/g' /setup/bootstrap.sql
-RUN sed -i 's/MYSQL_PASSWORD/${MYSQL_PASSWORD}/g' /setup/bootstrap.sql
+RUN sed -i "s/MYSQL_USERNAME/$MYSQL_USERNAME/g" /setup/bootstrap.sql
+RUN sed -i "s/MYSQL_PASSWORD/$MYSQL_PASSWORD/g" /setup/bootstrap.sql
 
 CMD [ "/bin/ash", "/setup/init.sh" ]
