@@ -1,5 +1,7 @@
 #!/bin/ash
 
+telegraf &
+
 mysql_install_db --user=root --ldata=/var/lib/mysql
 
 mysqld --user=root --bootstrap < /setup/bootstrap.sql

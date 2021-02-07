@@ -1,5 +1,5 @@
 #!/bin/ash
 
-influxd
+telegraf &
 
-#/bin/ash
+influxd

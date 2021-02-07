@@ -6,7 +6,7 @@
 #    By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/29 14:26:28 by ancoulon          #+#    #+#              #
-#    Updated: 2021/01/29 16:20:21 by ancoulon         ###   ########.fr        #
+#    Updated: 2021/02/05 14:02:03 by ancoulon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,10 @@ RUN apk add openssl
 RUN apk add pure-ftpd \
 	--repository http://dl-3.alpinelinux.org/alpine/edge/testing/ \
 	--allow-untrusted
+
+RUN apk add telegraf --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
+
+ADD telegraf.conf /etc/telegraf/telegraf.conf
 
 RUN adduser -D ${FTPS_USERNAME}
 RUN echo "${FTPS_USERNAME}:${FTPS_PASSWORD}" | chpasswd

@@ -6,7 +6,7 @@
 #    By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/01 09:48:13 by ancoulon          #+#    #+#              #
-#    Updated: 2021/02/02 10:14:42 by ancoulon         ###   ########.fr        #
+#    Updated: 2021/02/05 14:15:47 by ancoulon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,11 @@ RUN apk upgrade
 
 RUN apk add influxdb
 
-COPY influxdb.conf /etc/influxdb/influxdb.conf
+RUN apk add telegraf --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
+
+ADD telegraf.conf /etc/telegraf/telegraf.conf
+
+ADD influxdb.conf /etc/influxdb/influxdb.conf
 
 RUN mkdir -p /setup
 ADD init.sh /setup/init.sh

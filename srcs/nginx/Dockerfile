@@ -6,7 +6,7 @@
 #    By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/20 14:16:36 by ancoulon          #+#    #+#              #
-#    Updated: 2021/02/02 18:54:55 by ancoulon         ###   ########.fr        #
+#    Updated: 2021/02/04 18:04:28 by ancoulon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,10 @@ RUN apk upgrade
 RUN apk add openssh
 RUN apk add nginx
 RUN apk add openssl
+
+RUN apk add telegraf --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
+
+ADD telegraf.conf /etc/telegraf/telegraf.conf
 
 RUN adduser -D $SSH_USERNAME
 RUN echo "$SSH_USERNAME:$SSH_PASSWORD" | chpasswd

@@ -22,6 +22,8 @@ MYSQL_USERNAME=mysql
 MYSQL_PASSWORD=pass
 SSH_USERNAME=ssh
 SSH_PASSWORD=pass
+GRAFANA_USERNAME=grafana
+GRAFANA_PASSWORD=pass
 
 # PARAMETERS
 MINKIKUBE_FLAGS=--vm-driver=virtualbox
@@ -33,9 +35,9 @@ minikube start $MINKIKUBE_FLAGS
 eval $(minikube docker-env)
 
 # BUILDING IMAGES
-docker build -t ft_services_ftps srcs/ftps/. --build-arg EXTERNAL_IP=192.168.99.240 --build-arg FTPS_USERNAME=$FTPS_USERNAME --build-arg FTPS_PASSWORD=$FTPS_PASSWORD
-
 docker build -t ft_services_mysql srcs/mysql/. --build-arg MYSQL_USERNAME=$MYSQL_USERNAME --build-arg MYSQL_PASSWORD=$MYSQL_PASSWORD
+
+docker build -t ft_services_ftps srcs/ftps/. --build-arg EXTERNAL_IP=192.168.99.240 --build-arg FTPS_USERNAME=$FTPS_USERNAME --build-arg FTPS_PASSWORD=$FTPS_PASSWORD
 
 docker build -t ft_services_phpmyadmin srcs/phpmyadmin/.
 
@@ -54,8 +56,8 @@ kubectl create secret generic -n metallb-system memberlist --from-literal=secret
 
 # APPLYING SERVICES AND DEPLOYEMENTS
 kubectl apply -f srcs/metallb.yaml
-kubectl apply -f srcs/ftps.yaml
 kubectl apply -f srcs/mysql.yaml
+kubectl apply -f srcs/ftps.yaml
 kubectl apply -f srcs/phpmyadmin.yaml
 kubectl apply -f srcs/wordpress.yaml
 kubectl apply -f srcs/nginx.yaml
@@ -66,9 +68,6 @@ sleep 10
 
 # IMPORTING WORDPRESS CONFIG TO MYSQL DATABASE
 kubectl exec -i `kubectl get pods | grep -o "\S*mysql\S*"` -- mysql wordpress -u root < srcs/mysql/wordpress.sql
-
-# CREATING INFLUXDB DATABASE
-kubectl exec -i `kubectl get pods | grep -o "\S*influxdb\S*"` -- influx -execute "CREATE DATABASE monitoring"
 
 # OPENING DASHBOARD
 minikube dashboard

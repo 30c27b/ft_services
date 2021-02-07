@@ -1,7 +1,7 @@
 #!/bin/ash
 
+telegraf &
+
 /usr/sbin/sshd
 
 nginx -g 'daemon off;'
-
-#/bin/ash

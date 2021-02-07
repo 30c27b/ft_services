@@ -53,3 +53,8 @@ spec:
             - containerPort: 30002
             - containerPort: 30003
             - containerPort: 30004
+          livenessProbe:
+            tcpSocket:
+              port: 21
+            initialDelaySeconds: 4
+            periodSeconds: 4

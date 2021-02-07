@@ -6,7 +6,7 @@
 #    By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/26 12:28:37 by ancoulon          #+#    #+#              #
-#    Updated: 2021/01/29 16:29:48 by ancoulon         ###   ########.fr        #
+#    Updated: 2021/02/05 14:03:00 by ancoulon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,10 @@ RUN apk add openrc
 RUN apk add nginx
 RUN apk add php7 php7-fpm php7-opcache php7-gd php7-mysqli php7-zlib \
 	php7-curl php7-mbstring php7-json php7-session
+
+RUN apk add telegraf --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
+
+ADD telegraf.conf /etc/telegraf/telegraf.conf
 
 RUN mkdir -p /var/www/phpmyadmin
 ADD phpmyadmin /var/www/phpmyadmin

@@ -6,7 +6,7 @@
 #    By: ancoulon <ancoulon@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/20 21:39:55 by ancoulon          #+#    #+#              #
-#    Updated: 2021/02/02 18:54:27 by ancoulon         ###   ########.fr        #
+#    Updated: 2021/02/05 14:01:46 by ancoulon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,10 @@ RUN apk update
 RUN apk upgrade
 
 RUN apk add mariadb mariadb-common mariadb-client
+
+RUN apk add telegraf --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
+
+ADD telegraf.conf /etc/telegraf/telegraf.conf
 
 RUN mkdir -p /run/mysqld && touch /run/mysqld/mysqld.sock
 
