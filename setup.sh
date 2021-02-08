@@ -25,8 +25,8 @@ SSH_PASSWORD=pass
 GRAFANA_USERNAME=grafana
 GRAFANA_PASSWORD=pass
 
-# PARAMETERS
-MINKIKUBE_FLAGS=--vm-driver=virtualbox
+# MINIKUBE PARAMETERS
+MINKIKUBE_FLAGS="--vm-driver=virtualbox --addons dashboard --addons metallb"
 
 # STARTING MINIKUBE
 minikube start $MINKIKUBE_FLAGS
@@ -49,11 +49,6 @@ docker build -t ft_services_influxdb srcs/influxdb/.
 
 docker build -t ft_services_grafana srcs/grafana/.
 
-# INSTALLING METALLB
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.5/manifests/namespace.yaml
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.5/manifests/metallb.yaml
-kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
-
 # APPLYING SERVICES AND DEPLOYEMENTS
 kubectl apply -f srcs/metallb.yaml
 kubectl apply -f srcs/mysql.yaml
@@ -64,6 +59,7 @@ kubectl apply -f srcs/nginx.yaml
 kubectl apply -f srcs/influxdb.yaml
 kubectl apply -f srcs/grafana.yaml
 
+# GIVE TIME FOR ALL SERVICES TO START
 sleep 10
 
 # IMPORTING WORDPRESS CONFIG TO MYSQL DATABASE
