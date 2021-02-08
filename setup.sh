@@ -12,6 +12,7 @@
 #                                                                              #
 # **************************************************************************** #
 
+# UNCOMMENT TO DELETE PREVIOUS SETUP
 kubectl delete -f srcs/.
 minikube delete --all
 
